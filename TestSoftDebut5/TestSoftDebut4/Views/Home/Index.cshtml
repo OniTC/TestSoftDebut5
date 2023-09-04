@@ -1,0 +1,107 @@
+﻿@model List<TestSoftDebut5.Models.EmployeeModel>;
+@using TestSoftDebut5.Models;
+@{
+    ViewData["Title"] = "Home Page";
+
+    var departmentList = (List<DepartmentModel>)ViewBag.DepartmentList;
+}
+
+<style>
+    .invalid {
+        border-color: #dc3545 !important;
+    }
+</style>
+
+<div class="text-center">
+    <form id="frmAddEmp" method="post" action="@Url.Action("SaveEmp", "Home")">
+        <div class="form-group">
+            <label for="empNum">รหัสพนักงาน</label>
+            <input type="text" class="form-control" id="empNum" name="EmpNum">
+        </div>
+        <div class="form-group">
+            <label for="empName">ชื่อพนักงาน</label>
+            <input type="text" class="form-control" id="empName" name="EmpName">
+        </div>
+        <div class="form-group">
+            <label for="position">ตำแหน่ง</label>
+            <select class="form-control" id="position" name="Position">
+                <option value=""></option>
+                <option value="Clerk">Clerk</option>
+                <option value="Manager">Manager</option>
+                <option value="Managing Director">Managing Director</option>
+                <option value="Salesman">Salesman</option>
+                <option value="Supervisor">Supervisor</option>
+            </select>
+        </div>
+        <button type="button" id="btnSave" class="btn btn-success">เพิ่ม</button>
+    </form>
+</div>
+<hr />
+<div class="text-center">
+    <table width="100%">
+        <thead>
+            <tr>
+                <th>รหัสพนักงาน</th>
+                <th>ชื่อพนักงาน</th>
+                <th>ตำแหน่ง</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.EmpNum</td>
+                    <td>@item.EmpName</td>
+                    <td>@item.Position</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        @if (TempData["alert_msg"] != null)
+        {
+            @Html.Raw(TempData["alert_msg"])
+        }
+
+        $('#btnSave').on('click', function () {
+
+            if ($('#empNum').val() == null || $('#empNum').val() == '') {
+
+                $('#empNum').addClass('invalid');
+                alert('คุณยังไม่ได้กรอกรหัสพนักงาน');
+                return false;
+
+            } else {
+                $('#empNum').removeClass('invalid');
+            }
+
+            if ($('#empName').val() == null || $('#empName').val() == '') {
+
+                $('#empName').addClass('invalid');
+                alert('คุณยังไม่ได้กรอกชื่อพนักงาน');
+                return false;
+
+            } else {
+                $('#empName').removeClass('invalid');
+            }
+
+            if ($('#position').val() == null || $('#position').val() == '') {
+
+                $('#position').addClass('invalid');
+                alert('คุณยังไม่ได้เลือกตำแหน่ง');
+                return false;
+
+            } else {
+                $('#position').removeClass('invalid');
+            }
+
+            $('#frmAddEmp').submit();
+
+        });
+    });
+</script>
+
